@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreServiceRequest;
 
 class ServiceController extends Controller
 {
@@ -15,13 +16,9 @@ class ServiceController extends Controller
     }
 
     // 2. Simpan Ruangan Baru
-    public function store(Request $request)
+    public function store(StoreServiceRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'description' => 'nullable',
-        ]);
+        // Validasi via StoreServiceRequest
 
         Service::create($request->all());
 

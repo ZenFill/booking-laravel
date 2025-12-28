@@ -21,5 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useTailwind(); // <--- 2. Tambahkan Baris Ini
+
+        // Enforce strict mode in non-production environments
+        // Preventing lazy loading, silently discarding attributes, etc.
+        \Illuminate\Database\Eloquent\Model::shouldBeStrict(!\Illuminate\Support\Facades\App::isProduction());
     }
 }

@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/bookings/{booking}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
     Route::patch('/bookings/{booking}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
-    Route::get('/bookings/export/pdf', [BookingController::class, 'exportPdf'])->name('bookings.pdf');
+    Route::get('/bookings/export/pdf', [BookingController::class, 'downloadPdf'])->name('bookings.pdf');
     Route::resource('services', App\Http\Controllers\ServiceController::class);
     Route::resource('bookings', BookingController::class);
 });

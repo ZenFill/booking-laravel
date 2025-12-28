@@ -44,8 +44,10 @@
 
 <body>
 
-    <h2>Laporan Data Booking Studio</h2>
-    <p>Tanggal Cetak: {{ date('d M Y') }}</p>
+    <center>
+        <h1>{{ $title }}</h1>
+        <p>Tanggal Cetak: {{ date('d M Y') }}</p>
+    </center>
 
     <table>
         <thead>
@@ -59,13 +61,13 @@
         </thead>
         <tbody>
             @foreach($bookings as $index => $booking)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $booking->name }}</td>
-                <td>{{ $booking->service_type }}</td>
-                <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y, H:i') }}</td>
-                <td>{{ ucfirst($booking->status) }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $booking->name }}</td>
+                    <td>{{ $booking->service_type }}</td>
+                    <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y, H:i') }}</td>
+                    <td>{{ ucfirst($booking->status) }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

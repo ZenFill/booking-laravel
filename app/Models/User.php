@@ -35,6 +35,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Check if the user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

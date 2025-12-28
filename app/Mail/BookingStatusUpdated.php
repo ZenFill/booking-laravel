@@ -32,9 +32,9 @@ class BookingStatusUpdated extends Mailable
         // Logika Judul: Kalau Confirmed jadi "Disetujui", kalau Cancelled jadi "Ditolak"
         $status = ucfirst($this->booking->status);
 
-        if ($this->booking->status == 'confirmed') {
+        if ($this->booking->status == Booking::STATUS_CONFIRMED) {
             $status = 'Disetujui ✅';
-        } elseif ($this->booking->status == 'cancelled') {
+        } elseif ($this->booking->status == Booking::STATUS_CANCELLED) {
             $status = 'Ditolak ❌';
         }
 

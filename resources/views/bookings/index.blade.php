@@ -127,7 +127,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @foreach($bookings as $booking)
-                                <tr class="hover:bg-gray-50 transition duration-150">
+                                <tr id="row-booking-{{ $booking->id }}" class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
                                             <div
@@ -162,43 +162,34 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <span
-                                            class="px-3 py-1 rounded-full text-xs font-bold 
-                                                            {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                            {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
-                                                            {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
-                                            {{ ucfirst($booking->status) }}
+                                            class="status-pill px-3 py-1 rounded-full text-xs font-bold 
+                                                                            {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                            {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
+                                                                            {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
                                             {{ ucfirst($booking->status) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center space-x-2">
+                                        <div class="flex justify-center space-x-2 action-buttons">
                                             @if(Auth::user()->role == 'admin' && $booking->status == 'pending')
 
-                                                <form action="{{ route('bookings.approve', $booking->id) }}" method="POST">
-                                                    @csrf @method('PATCH')
-                                                    <button type="submit"
-                                                        class="p-2 bg-green-50 text-green-600 rounded hover:bg-green-100 transition"
-                                                        title="Setujui">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                        </svg>
-                                                    </button>
-                                                </form>
+                                                <button type="button" onclick="confirmApprove({{ $booking->id }})"
+                                                    class="p-2 bg-green-50 text-green-600 rounded hover:bg-green-100 transition"
+                                                    title="Setujui">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                </button>
 
-                                                <form action="{{ route('bookings.reject', $booking->id) }}" method="POST">
-                                                    @csrf @method('PATCH')
-                                                    <button type="button" onclick="confirmReject({{ $booking->id }})"
-                                                        class="p-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
-                                                        title="Tolak Booking">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                        </svg>
-                                                    </button>
-                                                </form>
+                                                <button type="button" onclick="confirmReject({{ $booking->id }})"
+                                                    class="p-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
+                                                    title="Tolak Booking">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
 
                                             @endif
                                             <a href="{{ route('bookings.edit', $booking->id) }}"
@@ -210,22 +201,16 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST"
-                                                id="delete-form-{{ $booking->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" onclick="confirmDelete({{ $booking->id }})"
-                                                    class="p-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
-                                                    title="Hapus">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </form>
+
+                                            <button type="button" onclick="confirmDelete({{ $booking->id }})"
+                                                class="p-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
+                                                title="Hapus">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -265,100 +250,256 @@
     </div>
 </x-app-layout>
 
-<script>
-    function confirmDelete(bookingId) {
-        Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Data booking ini akan dihapus permanen!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33', // Warna merah
-            cancelButtonColor: '#3085d6', // Warna biru
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Jika user klik "Ya", cari form-nya lalu submit manual
-                document.getElementById('delete-form-' + bookingId).submit();
-            }
-        })
+
+<!-- Custom Calendar Styles -->
+<style>
+    /* Header Styling */
+    .fc-toolbar-title {
+        font-family: 'Figtree', sans-serif !important;
+        font-weight: 800 !important;
+        color: #1e3a8a !important;
+        /* Blue 900 */
+        font-size: 1.5rem !important;
+        letter-spacing: -0.025em;
     }
 
-    // Fungsi Konfirmasi Tolak
-    function confirmReject(bookingId) {
-        Swal.fire({
-            title: 'Tolak Booking ini?',
-            text: "Status akan berubah menjadi Cancelled.",
+    /* Button Styling */
+    .fc-button-primary {
+        background-color: #3b82f6 !important;
+        /* Blue 500 */
+        border-color: #3b82f6 !important;
+        border-radius: 0.5rem !important;
+        /* Rounded-lg */
+        font-weight: 600 !important;
+        text-transform: capitalize;
+        padding: 0.5rem 1rem !important;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+    }
+
+    .fc-button-primary:hover {
+        background-color: #2563eb !important;
+        /* Blue 600 */
+        border-color: #2563eb !important;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
+    }
+
+    .fc-button-primary:disabled {
+        background-color: #93c5fd !important;
+        border-color: #93c5fd !important;
+    }
+
+    /* Active State for View Buttons */
+    .fc-button-active {
+        background-color: #1e40af !important;
+        /* Blue 800 */
+        border-color: #1e40af !important;
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* Current Day Highlight */
+    .fc-day-today {
+        background-color: #eff6ff !important;
+        /* Blue 50 */
+    }
+
+    /* Header Cells */
+    .fc-col-header-cell-cushion {
+        padding: 12px 0 !important;
+        color: #4b5563;
+        /* Gray 600 */
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    /* Event Styling */
+    .fc-event {
+        border-radius: 6px !important;
+        border: none !important;
+        padding: 2px 4px !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+    }
+
+    .fc-event:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    // --- 1. Fungsi AJAX Helper ---
+    async function performAction(url, method, confirmTitle, confirmText, confirmButtonText, confirmColor = '#d33', isDelete = false, bookingId) {
+        const result = await Swal.fire({
+            title: confirmTitle,
+            text: confirmText,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
+            confirmButtonColor: confirmColor,
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, Tolak!',
+            confirmButtonText: confirmButtonText,
             cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Cari form reject terdekat dari tombol yang diklik
-                // Trik: Kita harus kasih ID atau submit form parent-nya
-                // Cara termudah:
-                let form = document.querySelector(`button[onclick="confirmReject(${bookingId})"]`).closest('form');
-                form.submit();
-            }
-        })
-    }
-</script>
+        });
 
-<!-- Kalendar -->
-<script>
-    // Variable global biar bisa diakses fungsi toggle
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Memproses...',
+                text: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    // body: JSON.stringify({}) 
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    Swal.fire('Berhasil!', data.message, 'success');
+
+                    if (isDelete) {
+                        const row = document.getElementById('row-booking-' + bookingId);
+                        if (row) row.remove();
+                    } else {
+                        // Refresh halaman untuk update status pill (opsional bisa manipulasi DOM jika mau lebih canggih)
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                } else {
+                    Swal.fire('Gagal!', data.message || 'Terjadi kesalahan.', 'error');
+                }
+            } catch (error) {
+                Swal.fire('Error!', 'Terjadi kesalahan jaringan.', 'error');
+                console.error(error);
+            }
+        }
+    }
+
+    // --- 2. Action Wrappers ---
+    function confirmDelete(bookingId) {
+        performAction(
+            `/bookings/${bookingId}`,
+            'DELETE',
+            'Apakah Anda yakin?',
+            'Data booking ini akan dihapus permanen!',
+            'Ya, Hapus!',
+            '#d33',
+            true,
+            bookingId
+        );
+    }
+
+    function confirmReject(bookingId) {
+        performAction(
+            `/bookings/${bookingId}/reject`,
+            'PATCH',
+            'Tolak Booking ini?',
+            'Status akan berubah menjadi Cancelled.',
+            'Ya, Tolak!',
+            '#d33',
+            false,
+            bookingId
+        );
+    }
+
+    function confirmApprove(bookingId) {
+        performAction(
+            `/bookings/${bookingId}/approve`,
+            'PATCH',
+            'Setujui Booking ini?',
+            'Status akan berubah menjadi Confirmed.',
+            'Ya, Setujui!',
+            '#10b981', // Green
+            false,
+            bookingId
+        );
+    }
+
+    // --- 3. Calendar Logic ---
     var calendar;
 
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
 
-        calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            themeSystem: 'standard',
-            locale: 'id',
-            height: 'auto',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,listWeek'
-            },
-            buttonText: {
-                today: 'Hari Ini', month: 'Bulan', week: 'Minggu', list: 'List'
-            },
-            events: @json($events),
-            eventClick: function (info) {
-                Swal.fire({
-                    title: info.event.title,
-                    text: 'Waktu: ' + info.event.start.toLocaleString(),
-                    icon: 'info',
-                    confirmButtonText: 'Tutup'
-                });
-            }
-        });
+        if (calendarEl) {
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                themeSystem: 'standard',
+                locale: 'id',
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                buttonText: {
+                    today: 'Hari Ini', month: 'Bulan', week: 'Minggu', list: 'List'
+                },
+                events: @json($events),
+                eventClick: function (info) {
+                    info.jsEvent.preventDefault(); // Prevent Browser Navigation
+                    info.jsEvent.stopPropagation(); // Prevent Event Bubbling
 
-        // Kita render saat tombol diklik saja supaya tidak bug ukurannya
-        // atau render di awal tapi hidden
-        calendar.render();
+                    const eventColor = info.event.backgroundColor;
+
+                    Swal.fire({
+                        title: '<span class="text-xl font-bold text-gray-800">' + info.event.title + '</span>',
+                        html: `
+                            <div class="text-left bg-gray-50 p-4 rounded-lg border border-gray-100 mt-2">
+                                <p class="mb-2"><span class="font-semibold text-gray-500 w-20 inline-block">Waktu:</span> <span class="text-gray-900 font-medium">${info.event.start.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB</span></p>
+                                <p class="mb-2"><span class="font-semibold text-gray-500 w-20 inline-block">Tanggal:</span> <span class="text-gray-900 font-medium">${info.event.start.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
+                            </div>
+                            <p class="mt-4 text-sm text-gray-400">Klik tombol di bawah untuk menutup</p>
+                        `,
+                        icon: 'info',
+                        iconColor: eventColor,
+                        confirmButtonText: 'Tutup',
+                        confirmButtonColor: '#3b82f6',
+                        customClass: {
+                            popup: 'rounded-2xl',
+                            confirmButton: 'rounded-lg px-6 py-2.5 font-bold shadow-md'
+                        },
+                        buttonsStyling: false,
+                        focusConfirm: false, // Prevent auto-focusing that might cause issues on Enter
+                        returnFocus: false // Prevent returning focus to the element which might trigger weird browser behaviors
+                    });
+                }
+            });
+
+            // Initial render
+            calendar.render();
+        }
     });
 
-    // Fungsi Buka/Tutup Kalender
+    // --- 4. Toggle Calendar ---
     function toggleCalendar() {
         const container = document.getElementById('calendar-container');
         const arrow = document.getElementById('arrow-icon');
 
-        // Toggle class 'hidden'
-        container.classList.toggle('hidden');
+        if (!container || !arrow) return;
 
-        // Putar panah
+        container.classList.toggle('hidden');
         if (container.classList.contains('hidden')) {
             arrow.classList.remove('rotate-180');
         } else {
             arrow.classList.add('rotate-180');
-            // Trik: Render ulang saat dibuka agar ukurannya pas
-            setTimeout(() => { calendar.updateSize(); }, 10);
+            if (calendar) {
+                setTimeout(() => { calendar.updateSize(); }, 10);
+            }
         }
     }
 </script>
