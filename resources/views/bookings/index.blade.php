@@ -93,6 +93,22 @@
                 </div>
             </div>
 
+            @if(Auth::user()->role === 'admin')
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            ⚠️
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong>PENTING:</strong> Sebelum klik "Setujui", <span class="underline font-bold">wajib
+                                    cek Mutasi Bank</span>. Pastikan uang benar-benar masuk!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div
                     class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -163,9 +179,9 @@
                                     <td class="px-6 py-4">
                                         <span
                                             class="status-pill px-3 py-1 rounded-full text-xs font-bold 
-                                                                            {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                                            {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
-                                                                            {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
+                                                                                {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                                {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
+                                                                                {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
                                             {{ ucfirst($booking->status) }}
                                         </span>
                                     </td>
