@@ -12,7 +12,10 @@ class UpdateBookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check(); // Or add specific logic if needed
+        $booking = $this->route('booking'); // Ambil booking dari route binding
+
+        // Izinkan jika user adalah Admin ATAU pemilik booking
+        return Auth::user()->isAdmin() || $booking->user_id === Auth::id();
     }
 
     /**

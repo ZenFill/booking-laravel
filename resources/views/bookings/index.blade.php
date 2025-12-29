@@ -179,9 +179,9 @@
                                     <td class="px-6 py-4">
                                         <span
                                             class="status-pill px-3 py-1 rounded-full text-xs font-bold 
-                                                                                {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                                                {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
-                                                                                {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
+                                                                                    {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                                    {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
+                                                                                    {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
                                             {{ ucfirst($booking->status) }}
                                         </span>
                                     </td>
@@ -472,8 +472,20 @@
 
                     const eventColor = info.event.backgroundColor;
 
+                    // XSS Protection: Escape user content
+                    const escapeHtml = (unsafe) => {
+                        return unsafe
+                            .replace(/&/g, "&amp;")
+                            .replace(/</g, "&lt;")
+                            .replace(/>/g, "&gt;")
+                            .replace(/"/g, "&quot;")
+                            .replace(/'/g, "&#039;");
+                    }
+
+                    const safeTitle = escapeHtml(info.event.title);
+
                     Swal.fire({
-                        title: '<span class="text-xl font-bold text-gray-800">' + info.event.title + '</span>',
+                        title: '<span class="text-xl font-bold text-gray-800">' + safeTitle + '</span>',
                         html: `
                             <div class="text-left bg-gray-50 p-4 rounded-lg border border-gray-100 mt-2">
                                 <p class="mb-2"><span class="font-semibold text-gray-500 w-20 inline-block">Waktu:</span> <span class="text-gray-900 font-medium">${info.event.start.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB</span></p>

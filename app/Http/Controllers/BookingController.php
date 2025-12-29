@@ -128,6 +128,11 @@ class BookingController extends Controller
     // 4. Menampilkan Form Edit (Isinya data lama)
     public function edit(Booking $booking)
     {
+        // CEK KEPEMILIKAN: Hanya admin atau pemilik yg boleh edit
+        if ($booking->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
+            abort(403, 'Anda tidak memiliki hak untuk mengedit booking ini.');
+        }
+
         return view('bookings.edit', compact('booking'));
     }
 
@@ -151,6 +156,14 @@ class BookingController extends Controller
     // 6. Menghapus Data (Delete)
     public function destroy(Booking $booking)
     {
+        // CEK KEPEMILIKAN: Hanya admin atau pemilik yg boleh hapus
+        if ($booking->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
+            if (request()->wantsJson()) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+            abort(403, 'Anda tidak berhak menghapus booking ini.');
+        }
+
         // Hapus data dari database
         $booking->delete();
 
