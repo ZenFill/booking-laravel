@@ -14,18 +14,34 @@
                 </div>
 
                 <div class="relative z-10">
-                    <h1 class="text-3xl font-bold mb-2">Halo, {{ Auth::user()->name }}! 👋</h1>
+                    <h1 class="text-3xl font-bold mb-2 flex items-center gap-2">
+                        Halo, {{ Auth::user()->name }}!
+                        <svg class="w-8 h-8 text-yellow-300 animate-pulse" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </h1>
                     <p class="text-blue-100 text-lg">Kelola jadwal booking studio dan ruanganmu dengan mudah di sini.
                     </p>
                 </div>
-                <div class="relative z-10">
+                <div class="relative z-10 flex flex-wrap gap-2">
                     <a href="{{ route('bookings.create') }}"
-                        class="bg-white text-blue-700 font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-1">
-                        + Buat Booking Baru
+                        class="bg-white text-blue-700 font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-1 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
+                        </svg>
+                        Buat Booking Baru
                     </a>
                     <a href="{{ route('bookings.pdf') }}"
-                        class="bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-red-700 transition transform hover:-translate-y-1 ml-2">
-                        📄 Download Laporan
+                        class="bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-red-700 transition transform hover:-translate-y-1 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Download Laporan
                     </a>
                 </div>
             </div>
@@ -76,7 +92,12 @@
                 <div class="p-6 bg-white border-b border-gray-100 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition"
                     onclick="toggleCalendar()">
                     <div class="flex items-center gap-2">
-                        <h3 class="text-lg font-bold text-gray-700">📅 Jadwal Pemakaian Ruangan</h3>
+                        <h3 class="text-lg font-bold text-gray-700 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Jadwal Pemakaian Ruangan
+                        </h3>
                         <span class="text-xs text-gray-500 bg-blue-50 text-blue-600 px-2 py-1 rounded">Klik untuk
                             lihat</span>
                     </div>
@@ -97,7 +118,9 @@
                 <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                     <div class="flex">
                         <div class="flex-shrink-0">
-                            ⚠️
+                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-yellow-700">
@@ -179,9 +202,9 @@
                                     <td class="px-6 py-4">
                                         <span
                                             class="status-pill px-3 py-1 rounded-full text-xs font-bold 
-                                                                                    {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                                                    {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
-                                                                                    {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
+                                                                                        {{ $booking->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                                        {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-700' : '' }}
+                                                                                        {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
                                             {{ ucfirst($booking->status) }}
                                         </span>
                                     </td>
