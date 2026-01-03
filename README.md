@@ -2,7 +2,7 @@
 
 StudioBook adalah aplikasi manajemen pemesanan ruangan berbasis web yang modern dan responsif. Aplikasi ini dirancang untuk memudahkan pengelolaan jadwal sewa Studio Musik, Lapangan Futsal, dan Ruang Meeting.
 
-![StudioBook Dashboard Screenshot](https://via.placeholder.com/1200x600?text=StudioBook+Dashboard+Preview)
+![StudioBook Dashboard Screenshot](screenshots/dashboard.jpg)
 
 ## 🚀 Fitur Utama
 
