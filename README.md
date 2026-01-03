@@ -31,8 +31,8 @@ Ikuti langkah-langkah berikut untuk menjalankan project di komputer Anda:
 1.  **Clone Repository**
 
     ```bash
-    git clone https://github.com/username/studio-book.git
-    cd studio-book
+    git clone https://github.com/ZenFill/booking-laravel.git
+    cd booking-laravel
     ```
 
 2.  **Install Dependencies**
